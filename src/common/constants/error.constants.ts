@@ -6,4 +6,7 @@ export const ErrorMessages = {
   CITY_ALREADY_EXISTS: 'City with this name already exists',
   CITY_ALREADY_EXISTS_IN_STATE:
     'City with this name already exists in the specified state',
+  COLLEGE_ALREADY_EXISTS:
+    'College already exists in the specified city and state.',
+  COLLEGE_NOT_FOUND: 'College with provided ID does not exist',
 } as const;
