@@ -24,6 +24,10 @@ model College {
   placements  CollegePlacement[]
   courses     CollegeWiseCourse[]
 
+  @@index([score(sort: Desc)])
+  @@index([cityId])
+  @@index([stateId])
+
 }
 
 model CollegePlacement {
@@ -36,6 +40,8 @@ model CollegePlacement {
   medianPlacement  Decimal  @db.Decimal(10, 2)
   placementRate    Decimal  @db.Decimal(5, 2)
 
+  @@index([collegeId])
+  @@index([year])
 }
 
 model CollegeWiseCourse {
@@ -64,4 +70,5 @@ model City {
   stateId  Int
   colleges College[]
 
+   @@index([stateId])
 }

@@ -50,6 +50,24 @@ CREATE TABLE "City" (
     CONSTRAINT "City_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE INDEX "College_score_idx" ON "College"("score" DESC);
+
+-- CreateIndex
+CREATE INDEX "College_cityId_idx" ON "College"("cityId");
+
+-- CreateIndex
+CREATE INDEX "College_stateId_idx" ON "College"("stateId");
+
+-- CreateIndex
+CREATE INDEX "CollegePlacement_collegeId_idx" ON "CollegePlacement"("collegeId");
+
+-- CreateIndex
+CREATE INDEX "CollegePlacement_year_idx" ON "CollegePlacement"("year");
+
+-- CreateIndex
+CREATE INDEX "City_stateId_idx" ON "City"("stateId");
+
 -- AddForeignKey
 ALTER TABLE "College" ADD CONSTRAINT "College_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES "City"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
