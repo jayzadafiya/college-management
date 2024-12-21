@@ -11,7 +11,7 @@ async function bootstrap() {
   // Global interceptors
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  // Global filters
+  // Global filters // There is no need to add try catch this can handle all expetions
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // Global pipes
