@@ -34,11 +34,11 @@ CREATE TABLE "CollegeWiseCourse" (
 );
 
 -- CreateTable
-CREATE TABLE "State" (
+CREATE TABLE "States" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
 
-    CONSTRAINT "State_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "States_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -72,7 +72,7 @@ CREATE INDEX "City_stateId_idx" ON "City"("stateId");
 ALTER TABLE "College" ADD CONSTRAINT "College_cityId_fkey" FOREIGN KEY ("cityId") REFERENCES "City"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "College" ADD CONSTRAINT "College_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "College" ADD CONSTRAINT "College_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "States"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CollegePlacement" ADD CONSTRAINT "CollegePlacement_collegeId_fkey" FOREIGN KEY ("collegeId") REFERENCES "College"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -81,4 +81,4 @@ ALTER TABLE "CollegePlacement" ADD CONSTRAINT "CollegePlacement_collegeId_fkey" 
 ALTER TABLE "CollegeWiseCourse" ADD CONSTRAINT "CollegeWiseCourse_collegeId_fkey" FOREIGN KEY ("collegeId") REFERENCES "College"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "City" ADD CONSTRAINT "City_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "State"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "City" ADD CONSTRAINT "City_stateId_fkey" FOREIGN KEY ("stateId") REFERENCES "States"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -20,7 +20,6 @@ export class StateService {
     const state = await this.prisma.state.create({ data: createStateDto });
 
     return {
-      success: true,
       data: state,
       message: SuccessMessages.STATE_CREATED,
     };

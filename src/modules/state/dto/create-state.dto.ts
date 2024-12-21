@@ -5,7 +5,7 @@ export class CreateStateDto {
   @ApiProperty({
     description: 'Name of the state',
     maxLength: 100,
-    example: 'California',
+    example: 'Gujarat',
   })
   @IsNotEmpty()
   @IsString()
