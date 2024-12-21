@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsString, IsInt, Min, Max, IsNotEmpty } from 'class-validator';
+import { CollegeDtoMessages } from 'src/common/constants/module-constants/college.constants';
 
 export class CreateCollegeDto {
   @ApiProperty({
-    description: 'Name of the college',
+    description: CollegeDtoMessages.NAME_DESCRIPTION,
     example: 'Government engineering college',
   })
   @IsString()
@@ -13,7 +14,7 @@ export class CreateCollegeDto {
   name: string;
 
   @ApiProperty({
-    description: 'The score of the college (between 1 and 1000)',
+    description: CollegeDtoMessages.SCORE_DESCRIPTION,
     example: 850,
   })
   @IsInt()
@@ -23,7 +24,7 @@ export class CreateCollegeDto {
   score: number;
 
   @ApiProperty({
-    description: 'The ID of the city where the college is located',
+    description: CollegeDtoMessages.CITY_ID_DESCRIPTION,
     example: 1,
   })
   @IsNotEmpty()
@@ -31,7 +32,7 @@ export class CreateCollegeDto {
   cityId: number;
 
   @ApiProperty({
-    description: 'The ID of the state where the college is located',
+    description: CollegeDtoMessages.STATE_ID_DESCRIPTION,
     example: 23,
   })
   @IsInt()

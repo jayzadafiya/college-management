@@ -9,19 +9,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { CityService } from './city.service';
-import {
-  ApiBody,
-  ApiOperation,
-  ApiParam,
-  ApiQuery,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateCityDto } from './dto/create-city.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
 import { SuccessMessages } from 'src/common/constants/success.constants';
 import { ErrorMessages } from 'src/common/constants/error.constants';
+import { CityMessages } from 'src/common/constants/module-constants/city.constants';
+import { ApiCustomResponse } from 'src/common/decorator/api-response.decorator';
+import { PaginationQuery } from 'src/common/decorator/pagination-query.decorator';
 
 @ApiTags('Cities')
 @Controller('city')
@@ -29,22 +25,20 @@ export class CityController {
   constructor(private readonly cityService: CityService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new city' })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: SuccessMessages.CITY_CREATED,
+  @ApiOperation({
+    summary: CityMessages.CREATE_SUMMARY,
+    description: CityMessages.CREATE_DESCRIPTION,
   })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
-    description: ErrorMessages.CITY_ALREADY_EXISTS,
-  })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: ErrorMessages.STATE_NOT_FOUND,
-  })
+  @ApiCustomResponse(
+    HttpStatus.CREATED,
+    SuccessMessages.CITY_CREATED,
+    CreateCityDto,
+  )
+  @ApiCustomResponse(HttpStatus.CONFLICT, ErrorMessages.CITY_ALREADY_EXISTS)
+  @ApiCustomResponse(HttpStatus.NOT_FOUND, ErrorMessages.STATE_NOT_FOUND)
   @ApiBody({
     type: CreateCityDto,
-    description: 'The details of the city to be created.',
+    description: CityMessages.CREATE_BODY_DESCRIPTION,
   })
   async create(@Body() createCityDto: CreateCityDto) {
     return await this.cityService.create(createCityDto);
@@ -52,60 +46,37 @@ export class CityController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get all cities with pagination (cursor or page-based)',
+    summary: CityMessages.GET_ALL_SUMMARY,
+    description: CityMessages.GET_ALL_DESCRIPTION,
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: SuccessMessages.CITY_RETRIEVED,
-  })
-  @ApiQuery({
-    name: 'cursor',
-    required: false,
-    type: 'number',
-    description:
-      'The cursor (ID) to start the next page of results from. Use this for cursor-based pagination.',
-  })
-  @ApiQuery({
-    name: 'page',
-    required: false,
-    type: 'number',
-    description:
-      'The page number to retrieve. Use this for page-based pagination.',
-  })
-  @ApiQuery({
-    name: 'limit',
-    required: false,
-    type: 'number',
-    description: 'The number of results per page or cursor range.',
-    example: 10,
-  })
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.CITY_RETRIEVED, [
+    CreateCityDto,
+  ])
+  @PaginationQuery()
   async findAll(@Query() paginationDto: PaginationDto) {
     return await this.cityService.findAllCitiesWithPagination(paginationDto);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a city' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: SuccessMessages.CITY_UPDATE,
+  @ApiOperation({
+    summary: CityMessages.UPDATE_SUMMARY,
+    description: CityMessages.UPDATE_DESCRIPTION,
   })
-  @ApiResponse({
-    status: HttpStatus.NOT_FOUND,
-    description: ErrorMessages.CITY_NOT_FOUND,
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
-    description: ErrorMessages.CITY_ALREADY_EXISTS_IN_STATE,
-  })
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.CITY_UPDATED, CreateCityDto)
+  @ApiCustomResponse(HttpStatus.NOT_FOUND, ErrorMessages.CITY_NOT_FOUND)
+  @ApiCustomResponse(
+    HttpStatus.CONFLICT,
+    ErrorMessages.CITY_ALREADY_EXISTS_IN_STATE,
+  )
   @ApiParam({
     name: 'id',
-    description: 'ID of the city to update',
+    description: CityMessages.UPDATE_PARAM_DESCRIPTION,
     example: 1,
     required: true,
   })
   @ApiBody({
     type: UpdateCityDto,
-    description: 'The details of the city to be updated.',
+    description: CityMessages.UPDATE_BODY_DESCRIPTION,
   })
   async updateCity(
     @Param('id') id: number,

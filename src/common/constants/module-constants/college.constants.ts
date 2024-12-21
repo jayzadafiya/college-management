@@ -11,3 +11,10 @@ export const CollegeMessages = {
   UPDATE_BODY_DESCRIPTION: 'The details of the college to be updated.',
   UPDATE_PARAM_DESCRIPTION: 'ID of the college to update',
 } as const;
+
+export const CollegeDtoMessages = {
+  NAME_DESCRIPTION: 'The name of the college (must be unique).',
+  SCORE_DESCRIPTION: 'The score of the college (must be between 1 and 1000).',
+  CITY_ID_DESCRIPTION: 'The ID of the city where the college is located.',
+  STATE_ID_DESCRIPTION: 'The ID of the state where the college is located.',
+} as const;

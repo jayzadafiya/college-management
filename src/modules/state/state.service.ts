@@ -10,7 +10,9 @@ import * as path from 'path';
 export class StateService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createStateDto: CreateStateDto) {
+  async create(
+    createStateDto: CreateStateDto,
+  ): Promise<{ data: CreateStateDto; message: string }> {
     const existingState = await this.prisma.state.findFirst({
       where: { name: createStateDto.name },
     });
@@ -27,7 +29,7 @@ export class StateService {
     };
   }
 
-  async findAll() {
+  async findAll(): Promise<CreateStateDto[]> {
     return this.prisma.state.findMany({
       include: {
         _count: {

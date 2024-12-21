@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional, IsNumber, IsInt } from 'class-validator';
+import { IsOptional, IsNumber, IsInt, Min } from 'class-validator';
+import { PaginationDtoMessage } from '../constants/pagination.constants';
 
 export class PaginationDto {
   @ApiProperty({
-    description:
-      'The cursor for pagination (id of the last item from the previous page)',
+    description: PaginationDtoMessage.CURSOR_DESCRIPTION,
     required: false,
     example: 0,
   })
@@ -16,8 +16,7 @@ export class PaginationDto {
   cursor?: number;
 
   @ApiProperty({
-    description:
-      'The page number for pagination (used for page-based pagination)',
+    description: PaginationDtoMessage.PAGE_DESCRIPTION,
     required: false,
     example: 1,
   })
@@ -25,10 +24,11 @@ export class PaginationDto {
   @IsOptional()
   @IsNumber()
   @IsInt()
+  @Min(1)
   page?: number;
 
   @ApiProperty({
-    description: 'Number of items per page',
+    description: PaginationDtoMessage.LIMIT_DESCRIPTION,
     required: false,
     example: 10,
   })

@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { ErrorMessages } from 'src/common/constants/error.constants';
 import { SuccessMessages } from 'src/common/constants/success.constants';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { findAll, updateModel } from 'src/common/helperFunction';
+import { findAll } from 'src/common/helperFunction';
 import {
   PaginationParams,
   PaginationResponse,
@@ -84,6 +84,15 @@ export class CollegeService {
     if (collegeExistsInCityState) {
       throw new ConflictException(ErrorMessages.COLLEGE_ALREADY_EXISTS);
     }
-    return await updateModel(this.prisma.college, { id }, data);
+
+    const updatedCity = await this.prisma.college.update({
+      where: { id },
+      data,
+    });
+
+    return {
+      data: updatedCity,
+      message: SuccessMessages.COLLEGE_UPDATE,
+    };
   }
 }

@@ -7,11 +7,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { StateService } from './state.service';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateStateDto } from './dto/create-state.dto';
 import { TransformInterceptor } from 'src/common/transform.interceptor';
 import { ErrorMessages } from 'src/common/constants/error.constants';
 import { SuccessMessages } from 'src/common/constants/success.constants';
+import { ApiCustomResponse } from 'src/common/decorator/api-response.decorator';
+import { StateMessages } from 'src/common/constants/module-constants/state.constants';
 
 @ApiTags('States')
 @Controller('state')
@@ -20,22 +22,15 @@ export class StateController {
   constructor(private readonly stateService: StateService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new state' })
   @ApiOperation({
-    summary: 'Create a new state',
-    description: 'Creates a new state in the database.',
+    summary: StateMessages.CREATE_SUMMARY,
+    description: StateMessages.CREATE_DESCRIPTION,
   })
-  @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: SuccessMessages.STATE_CREATED,
-  })
-  @ApiResponse({
-    status: HttpStatus.CONFLICT,
-    description: ErrorMessages.STATE_ALREADY_EXISTS,
-  })
+  @ApiCustomResponse(HttpStatus.CREATED, SuccessMessages.STATE_CREATED)
+  @ApiCustomResponse(HttpStatus.CONFLICT, ErrorMessages.STATE_ALREADY_EXISTS)
   @ApiBody({
     type: CreateStateDto,
-    description: 'The details of the state to be created.',
+    description: StateMessages.CREATE_BODY_DESCRIPTION,
   })
   async create(@Body() createStateDto: CreateStateDto) {
     return this.stateService.create(createStateDto);
@@ -43,28 +38,24 @@ export class StateController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get all states',
-    description:
-      'Retrieves a list of all states along with their associated city and college counts.',
+    summary: StateMessages.GET_ALL_SUMMARY,
+    description: StateMessages.GET_ALL_DESCRIPTION,
   })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: SuccessMessages.STATE_RETRIEVED,
-  })
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.STATE_RETRIEVED)
   async findAll() {
     return await this.stateService.findAll();
   }
 
   @Post('seed')
-  @ApiOperation({ summary: 'Seed states into the database' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: SuccessMessages.STATE_SEEDED,
+  @ApiOperation({
+    summary: StateMessages.SEED_SUMMARY,
+    description: StateMessages.SEED_DESCRIPTION,
   })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: ErrorMessages.STATE_SEED_FAILED,
-  })
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.STATE_SEEDED)
+  @ApiCustomResponse(
+    HttpStatus.INTERNAL_SERVER_ERROR,
+    ErrorMessages.STATE_SEED_FAILED,
+  )
   async seedStates() {
     await this.stateService.seedStates();
     return {

@@ -9,6 +9,8 @@ import { ErrorMessages } from 'src/common/constants/error.constants';
 import { SuccessMessages } from 'src/common/constants/success.constants';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
+import { PaginationParams } from 'src/common/model/pagination.model';
+import { findAll } from 'src/common/helperFunction';
 
 @Injectable()
 export class CityService {
@@ -47,59 +49,17 @@ export class CityService {
   async findAllCitiesWithPagination(paginationDto: PaginationDto) {
     const { cursor, page, limit } = paginationDto;
 
-    // If page is provided, use page-based pagination
-    if (page) {
-      return this.findCitiesWithPage(page, limit);
-    }
+    const paginationParams: PaginationParams = { cursor, page, limit };
 
-    // Default behavior: use cursor pagination if neither cursor nor page is provided
-    return this.findCitiesWithCursor(cursor, limit);
-  }
-
-  // Cursor-based pagination method
-  private async findCitiesWithCursor(cursor: number, limit: number) {
-    const cities = await this.prisma.city.findMany({
-      take: limit,
-      skip: cursor ? 1 : 0,
-      cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { id: 'asc' },
-      select: { id: true, name: true, stateId: true },
-    });
-
-    const nextCursor = cities.length ? cities[cities.length - 1].id : null;
+    const { data, meta } = await findAll<CreateCityDto>(
+      this.prisma.city,
+      paginationParams,
+      { state: true },
+    );
 
     return {
-      success: true,
-      data: cities,
-      meta: {
-        nextCursor,
-        limit,
-      },
-    };
-  }
-
-  // Page-based pagination method
-  private async findCitiesWithPage(page: number, limit: number) {
-    const skip = (page - 1) * limit;
-
-    const cities = await this.prisma.city.findMany({
-      skip,
-      take: limit,
-      orderBy: { id: 'asc' },
-      select: { id: true, name: true, stateId: true },
-    });
-
-    const totalCities = await this.prisma.city.count();
-
-    return {
-      success: true,
-      data: cities,
-      meta: {
-        total: totalCities,
-        page,
-        limit,
-        totalPages: Math.ceil(totalCities / limit),
-      },
+      data,
+      meta,
     };
   }
 
@@ -130,7 +90,7 @@ export class CityService {
     return {
       success: true,
       data: updatedCity,
-      message: 'City updated successfully',
+      message: SuccessMessages.CITY_UPDATED,
     };
   }
 }

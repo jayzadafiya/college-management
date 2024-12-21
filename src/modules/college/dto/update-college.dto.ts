@@ -1,31 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsInt, IsOptional, MaxLength } from 'class-validator';
+import { IsString, IsInt, IsOptional } from 'class-validator';
+import { CollegeDtoMessages } from 'src/common/constants/module-constants/college.constants';
 
 export class UpdateCollegeDto {
   @ApiProperty({
-    description: 'The name of the college.',
+    description: CollegeDtoMessages.NAME_DESCRIPTION,
     example: 'Government Engineering College',
   })
   @IsString()
-  @MaxLength(255, { message: 'College name should not exceed 255 characters.' })
   name: string;
 
   @ApiProperty({
-    description: 'The ID of the city where the college is located.',
+    description: CollegeDtoMessages.CITY_ID_DESCRIPTION,
     example: 1,
   })
   @IsInt()
   cityId: number;
 
   @ApiProperty({
-    description: 'The ID of the state where the college is located.',
+    description: CollegeDtoMessages.STATE_ID_DESCRIPTION,
     example: 23,
   })
   @IsInt()
   stateId: number;
 
   @ApiProperty({
-    description: 'The score of the college.',
+    description: CollegeDtoMessages.SCORE_DESCRIPTION,
     example: 850,
   })
   @IsInt()

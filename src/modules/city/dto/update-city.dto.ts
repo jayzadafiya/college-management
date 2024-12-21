@@ -1,17 +1,17 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateCityDto } from './create-city.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { CityDtoMessages } from 'src/common/constants/module-constants/city.constants';
 
 export class UpdateCityDto extends PartialType(CreateCityDto) {
   @ApiPropertyOptional({
-    description: 'Name of the city (optional for partial update)',
+    description: CityDtoMessages.NAME_DESCRIPTION,
     example: 'Mumbai',
   })
   name?: string;
 
   @ApiPropertyOptional({
-    description:
-      'ID of the state the city belongs to (optional for partial update)',
+    description: CityDtoMessages.STATE_ID_DESCRIPTION,
     example: 5,
   })
   stateId?: number;
