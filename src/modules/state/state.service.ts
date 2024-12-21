@@ -3,6 +3,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateStateDto } from './dto/create-state.dto';
 import { ErrorMessages } from 'src/common/constants/error.constants';
 import { SuccessMessages } from 'src/common/constants/success.constants';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class StateService {
@@ -36,5 +38,14 @@ export class StateService {
         },
       },
     });
+  }
+
+  async seedStates() {
+    const filePath = path.resolve(__dirname, '../config/state.json');
+    const stateData: string[] = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+    for (const stateName of stateData) {
+      this.create({ name: stateName });
+    }
   }
 }

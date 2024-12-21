@@ -54,4 +54,22 @@ export class StateController {
   async findAll() {
     return await this.stateService.findAll();
   }
+
+  @Post('seed')
+  @ApiOperation({ summary: 'Seed states into the database' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: SuccessMessages.STATE_SEEDED,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: ErrorMessages.STATE_SEED_FAILED,
+  })
+  async seedStates() {
+    await this.stateService.seedStates();
+    return {
+      success: true,
+      message: SuccessMessages.STATE_SEEDED,
+    };
+  }
 }

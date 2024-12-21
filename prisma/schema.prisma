@@ -61,8 +61,6 @@ model State {
   colleges College[]
   cities   City[]
 
-  @@map("States")
-
 }
 
 model City {
