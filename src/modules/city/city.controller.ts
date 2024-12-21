@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CityService } from './city.service';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
@@ -18,9 +19,11 @@ import { ErrorMessages } from 'src/common/constants/error.constants';
 import { CityMessages } from 'src/common/constants/module-constants/city.constants';
 import { ApiCustomResponse } from 'src/common/decorator/api-response.decorator';
 import { PaginationQuery } from 'src/common/decorator/pagination-query.decorator';
+import { TransformInterceptor } from 'src/common/transform.interceptor';
 
 @ApiTags('Cities')
 @Controller('city')
+@UseInterceptors(TransformInterceptor)
 export class CityController {
   constructor(private readonly cityService: CityService) {}
 

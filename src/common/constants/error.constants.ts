@@ -9,4 +9,9 @@ export const ErrorMessages = {
   COLLEGE_ALREADY_EXISTS:
     'College already exists in the specified city and state.',
   COLLEGE_NOT_FOUND: 'College with provided ID does not exist',
+  PLACEMENT_RECORD_ALREADY_EXISTS:
+    'A placement record for this college and year already exists.',
+  COLLEGE_PLACEMENT_ALREADY_EXISTS_FOR_YEAR:
+    'A placement record for the specified college and year already exists.',
+  COLLEGE_PLACEMENT_NOT_FOUND: 'College placement record not found',
 } as const;

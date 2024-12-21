@@ -7,9 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CollegeService } from './college.service';
-import { ApiBody, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { SuccessMessages } from 'src/common/constants/success.constants';
 import { ErrorMessages } from 'src/common/constants/error.constants';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
@@ -19,8 +20,11 @@ import { CollegeMessages } from 'src/common/constants/module-constants/college.c
 import { PaginationMessage } from 'src/common/constants/pagination.constants';
 import { CreateCollegeDto } from './dto/create-college.dto';
 import { UpdateCollegeDto } from './dto/update-college.dto';
+import { TransformInterceptor } from 'src/common/transform.interceptor';
 
+@ApiTags('Colleges')
 @Controller('college')
+@UseInterceptors(TransformInterceptor)
 export class CollegeController {
   constructor(private readonly collegeService: CollegeService) {}
 
@@ -45,11 +49,9 @@ export class CollegeController {
     description: CollegeMessages.GET_ALL_DESCRIPTION,
   })
   @PaginationQuery()
-  @ApiCustomResponse(
-    HttpStatus.OK,
-    SuccessMessages.COLLEGE_RETRIEVED,
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.COLLEGE_RETRIEVED, [
     CreateCollegeDto,
-  )
+  ])
   @ApiCustomResponse(HttpStatus.BAD_REQUEST, PaginationMessage.INVALID_PAGE)
   async findAll(@Query() paginationDto: PaginationDto) {
     return await this.collegeService.findAllColleges(paginationDto);

@@ -6,6 +6,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { StateModule } from './modules/state/state.module';
 import { CityModule } from './modules/city/city.module';
 import { CollegeModule } from './modules/college/college.module';
+import { CollegePlacementModule } from './modules/college-placement/college-placement.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,6 +16,7 @@ import { CollegeModule } from './modules/college/college.module';
     StateModule,
     CityModule,
     CollegeModule,
+    CollegePlacementModule,
   ],
   controllers: [AppController],
   providers: [AppService],

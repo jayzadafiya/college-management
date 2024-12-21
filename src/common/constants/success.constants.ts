@@ -8,4 +8,8 @@ export const SuccessMessages = {
   COLLEGE_CREATE: 'College successfully created.',
   COLLEGE_RETRIEVED: 'Successfully retrieved colleges with pagination',
   COLLEGE_UPDATE: 'College updated successfully',
+  COLLEGE_PLACEMENT_CREATED: 'College placement record created successfully.',
+  COLLEGE_PLACEMENT_RETRIEVED:
+    'Successfully retrieved colleges placement with pagination',
+  COLLEGE_PLACEMENT_UPDATED: 'College placement record updated successfully',
 } as const;
