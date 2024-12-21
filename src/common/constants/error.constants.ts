@@ -14,4 +14,9 @@ export const ErrorMessages = {
   COLLEGE_PLACEMENT_ALREADY_EXISTS_FOR_YEAR:
     'A placement record for the specified college and year already exists.',
   COLLEGE_PLACEMENT_NOT_FOUND: 'College placement record not found',
+  COLLEGE_COURSE_EXISTS: 'Course already exists for the specified college',
+  COLLEGE_COURSE_NOT_FOUND:
+    'The specified college course record was not found.',
+  COURSE_NAME_CONFLICT:
+    'A course with the same name already exists for this college.',
 } as const;

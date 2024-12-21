@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional, IsNumber, IsInt, Min } from 'class-validator';
+import { IsOptional, IsInt, Min } from 'class-validator';
 import { PaginationDtoMessage } from '../constants/pagination.constants';
 
 export class PaginationDto {
@@ -11,7 +11,6 @@ export class PaginationDto {
   })
   @IsOptional()
   @Transform(({ value }) => (value ? Number(value) : null))
-  @IsNumber()
   @IsInt()
   cursor?: number;
 
@@ -22,7 +21,6 @@ export class PaginationDto {
   })
   @Transform(({ value }) => (value ? Number(value) : null))
   @IsOptional()
-  @IsNumber()
   @IsInt()
   @Min(1)
   page?: number;
@@ -34,7 +32,6 @@ export class PaginationDto {
   })
   @Transform(({ value }) => (value ? Number(value) : null))
   @IsOptional()
-  @IsNumber()
   @IsInt()
   limit: number = 10;
 }

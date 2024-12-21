@@ -2,7 +2,8 @@ export const PlacementMessages = {
   CREATE_SUMMARY: 'Create a new college placement record',
   CREATE_DESCRIPTION: 'Creates a new collage placement in the database.',
   CREATE_BODY_DESCRIPTION: 'The details of the placement data to be created.',
-  GET_ALL_SUMMARY: 'Get all college placements with pagination',
+  GET_ALL_SUMMARY:
+    'Get all college placements with pagination  (cursor or page-based)',
   GET_ALL_DESCRIPTION:
     'Retrieve all college placement records with pagination support.',
   UPDATE_SUMMARY: 'Update a college placement record',

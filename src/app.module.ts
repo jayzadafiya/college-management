@@ -7,6 +7,7 @@ import { StateModule } from './modules/state/state.module';
 import { CityModule } from './modules/city/city.module';
 import { CollegeModule } from './modules/college/college.module';
 import { CollegePlacementModule } from './modules/college-placement/college-placement.module';
+import { CollegeWiseCourseModule } from './modules/college-wise-course/college-wise-course.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -17,6 +18,7 @@ import { CollegePlacementModule } from './modules/college-placement/college-plac
     CityModule,
     CollegeModule,
     CollegePlacementModule,
+    CollegeWiseCourseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
