@@ -38,19 +38,31 @@ export class CollegePlacementService {
     });
 
     if (existingRecord) {
-      throw new ConflictException(
-        ErrorMessages.COLLEGE_PLACEMENT_ALREADY_EXISTS_FOR_YEAR,
-      );
+      const isSameRecord =
+        existingRecord.highestPlacement.toNumber() ===
+          parseFloat(highestPlacement) &&
+        existingRecord.averagePlacement.toNumber() ===
+          parseFloat(averagePlacement) &&
+        existingRecord.medianPlacement.toNumber() ===
+          parseFloat(medianPlacement) &&
+        existingRecord.placementRate.toNumber() === parseFloat(placementRate);
+
+      // If all the fields are the same, throw an error
+      if (isSameRecord) {
+        throw new ConflictException(
+          ErrorMessages.COLLEGE_PLACEMENT_ALREADY_EXISTS_FOR_YEAR,
+        );
+      }
     }
 
     const placement = await this.prisma.collegePlacement.create({
       data: {
         collegeId,
         year,
-        highestPlacement: parseFloat(highestPlacement),
-        averagePlacement: parseFloat(averagePlacement),
-        medianPlacement: parseFloat(medianPlacement),
-        placementRate: parseFloat(placementRate),
+        highestPlacement: parseFloat(highestPlacement) || 0,
+        averagePlacement: parseFloat(averagePlacement) || 0,
+        medianPlacement: parseFloat(medianPlacement) || 0,
+        placementRate: parseFloat(placementRate) || 0,
       },
     });
 
@@ -82,6 +94,15 @@ export class CollegePlacementService {
     id: number,
     updateCollegePlacementDto: UpdateCollegePlacementDto,
   ) {
+    const {
+      collegeId,
+      year,
+      highestPlacement,
+      averagePlacement,
+      medianPlacement,
+      placementRate,
+    } = updateCollegePlacementDto;
+
     // Check if the placement record exists
     const placement = await this.prisma.collegePlacement.findUnique({
       where: { id },
@@ -89,6 +110,29 @@ export class CollegePlacementService {
 
     if (!placement) {
       throw new NotFoundException(ErrorMessages.COLLEGE_PLACEMENT_NOT_FOUND);
+    }
+
+    // Check if a record for the given collegeId and year already exists
+    const existingRecord = await this.prisma.collegePlacement.findFirst({
+      where: { collegeId, year, NOT: { id } },
+    });
+
+    if (existingRecord) {
+      const isSameRecord =
+        existingRecord.highestPlacement.toNumber() ===
+          parseFloat(highestPlacement) &&
+        existingRecord.averagePlacement.toNumber() ===
+          parseFloat(averagePlacement) &&
+        existingRecord.medianPlacement.toNumber() ===
+          parseFloat(medianPlacement) &&
+        existingRecord.placementRate.toNumber() === parseFloat(placementRate);
+
+      // If all the fields are the same, throw an error
+      if (isSameRecord) {
+        throw new ConflictException(
+          ErrorMessages.COLLEGE_PLACEMENT_ALREADY_EXISTS_FOR_YEAR,
+        );
+      }
     }
 
     const updateCollegePlacement = await this.prisma.collegePlacement.update({

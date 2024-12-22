@@ -86,6 +86,10 @@ export class CollegePlacementController {
     HttpStatus.NOT_FOUND,
     ErrorMessages.COLLEGE_PLACEMENT_NOT_FOUND,
   )
+  @ApiCustomResponse(
+    HttpStatus.CONFLICT,
+    ErrorMessages.COLLEGE_PLACEMENT_ALREADY_EXISTS_FOR_YEAR,
+  )
   @ApiParam({
     name: 'id',
     description: PlacementMessages.UPDATE_PARAM_DESCRIPTION,
