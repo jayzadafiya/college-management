@@ -149,7 +149,7 @@ export class CollegeWiseCourseService {
       });
     }
 
-    if ((!courses || courses.length === 0) && (page >= 1 || cursor === 0)) {
+    if ((!courses || courses.length === 0) && (page <= 1 || cursor === 0)) {
       throw new NotFoundException(ErrorMessages.COLLEGE_COURSE_NOT_FOUND);
     }
 
@@ -159,11 +159,7 @@ export class CollegeWiseCourseService {
         page: page || 1,
         limit: limit || 20,
         nextCursor:
-          cursor !== undefined || !Number.isNaN(cursor)
-            ? courses.length
-              ? courses[courses.length - 1].id
-              : null
-            : null,
+          !page && courses.length ? courses[courses.length - 1].id : null,
         total: !Number.isNaN(cursor)
           ? null
           : await this.prisma.collegeWiseCourse.count({
