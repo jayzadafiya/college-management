@@ -101,7 +101,7 @@ export class CollegeWiseCourseController {
   })
   @PaginationQuery()
   @ApiCustomResponse(HttpStatus.OK, SuccessMessages.COLLEGE_COURSE_RETRIEVED, [
-    [CreateCollegeWiseCourseDto],
+    CreateCollegeWiseCourseDto,
   ])
   @ApiParam({
     name: 'collegeId',
