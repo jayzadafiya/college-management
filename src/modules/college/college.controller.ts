@@ -90,13 +90,12 @@ export class CollegeController {
 
   @Get(':collegeId')
   @ApiOperation({
-    summary: 'Get college placement data by college ID',
-    description:
-      'This endpoint retrieves placement data for a specific college based on the provided college ID. It returns average placement data grouped by year and detailed placement data with trends (up or down) over the years.',
+    summary: CollegeMessages.PLACEMENT_SUMMARY,
+    description: CollegeMessages.PLACEMENT_DESCRIPTION,
   })
   @ApiParam({
     name: 'collegeId',
-    description: 'ID of the college to fetch placement data for',
+    description: CollegeMessages.PLACEMENT_PARAM_DESCRIPTION,
     type: Number,
     example: 1,
   })

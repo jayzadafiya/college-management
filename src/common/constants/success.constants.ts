@@ -17,4 +17,5 @@ export const SuccessMessages = {
   COLLEGE_COURSE_UPDATED: 'Course updated successfully',
 
   COLLOEG_PLACEMENT_DETAILS: 'The placement data of the specified college',
+  COLLEGE_MATCHING_CRITERIA: 'The colleges matching the specified criteria',
 } as const;

@@ -159,19 +159,18 @@ export class CollegeWiseCourseService {
         page: page || 1,
         limit: limit || 20,
         nextCursor:
-          cursor !== undefined
+          cursor !== undefined || !Number.isNaN(cursor)
             ? courses.length
               ? courses[courses.length - 1].id
               : null
             : null,
-        total:
-          cursor !== undefined
-            ? null
-            : await this.prisma.collegeWiseCourse.count({
-                where: {
-                  collegeId,
-                },
-              }),
+        total: !Number.isNaN(cursor)
+          ? null
+          : await this.prisma.collegeWiseCourse.count({
+              where: {
+                collegeId,
+              },
+            }),
       },
     };
   }

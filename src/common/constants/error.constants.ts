@@ -19,4 +19,6 @@ export const ErrorMessages = {
     'The specified college course record was not found.',
   COURSE_NAME_CONFLICT:
     'A course with the same name already exists for this college.',
+  CITY_NOT_FOUND_IN_STATE: 'City not found in the specified state',
+  INVALID_QUERY_PARAMS: 'Invalid query parameters provided',
 } as const;

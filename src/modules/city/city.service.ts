@@ -11,6 +11,7 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
 import { PaginationParams } from 'src/common/model/pagination.model';
 import { findAll } from 'src/common/helperFunction';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class CityService {
@@ -91,6 +92,104 @@ export class CityService {
       success: true,
       data: updatedCity,
       message: SuccessMessages.CITY_UPDATED,
+    };
+  }
+
+  async getColleges(
+    cityName?: string,
+    stateName?: string,
+    paginationDto?: PaginationDto,
+  ) {
+    const { cursor, page, limit } = paginationDto;
+
+    // If both city and state are provided, validate that the city exists in the given state
+    if (cityName && stateName) {
+      const cityExistsInState = await this.prisma.city.findFirst({
+        where: {
+          name: {
+            equals: cityName,
+            mode: 'insensitive',
+          },
+          state: {
+            name: {
+              equals: stateName,
+              mode: 'insensitive',
+            },
+          },
+        },
+      });
+
+      if (!cityExistsInState) {
+        throw new NotFoundException(ErrorMessages.CITY_NOT_FOUND_IN_STATE);
+      }
+    }
+
+    const where: Prisma.CollegeWhereInput = {
+      ...(cityName && {
+        city: {
+          name: {
+            equals: cityName,
+            mode: 'insensitive',
+          },
+        },
+      }),
+      ...(stateName && {
+        state: {
+          name: {
+            equals: stateName,
+            mode: 'insensitive',
+          },
+        },
+      }),
+    };
+
+    let skip = 0;
+
+    if (page) {
+      skip = (page - 1) * limit;
+    } else {
+      skip = cursor ? 1 : 0;
+    }
+
+    const colleges = await this.prisma.college.findMany({
+      where,
+      orderBy: {
+        score: 'desc',
+      },
+      select: {
+        id: true,
+        name: true,
+        score: true,
+        city: {
+          select: {
+            name: true,
+          },
+        },
+        state: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      take: limit,
+      skip,
+    });
+
+    let nextCursor: string | null = null;
+    if (!page && colleges.length > 0) {
+      nextCursor = colleges[colleges.length - 1].id.toString();
+    }
+
+    return {
+      data: colleges,
+      meta: {
+        page: page || 1,
+        limit: limit || 20,
+        nextCursor,
+        total: !Number.isNaN(cursor)
+          ? null
+          : await this.prisma.college.count({ where }),
+      },
     };
   }
 }

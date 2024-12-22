@@ -10,6 +10,9 @@ export const CollegeWiseCourseMessages = {
   UPDATE_DESCRIPTION: 'Update an existing college course record by ID.',
   UPDATE_PARAM_DESCRIPTION: 'The ID of the college course to update.',
   UPDATE_BODY_DESCRIPTION: 'The details of the college course to be updated.',
+  COLLEGE_SUMMARY: 'Get college courses by college ID',
+  COLLEGE_DESCRIPTION:
+    'This endpoint retrieves courses for a specific college based on the provided college ID.',
 } as const;
 
 export const CollegeWiseCourseDtoMessages = {

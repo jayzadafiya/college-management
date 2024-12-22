@@ -15,6 +15,11 @@ export const CityMessages = {
   UPDATE_PARAM_DESCRIPTION: 'The ID of the city to be updated.',
   UPDATE_BODY_DESCRIPTION:
     'The updated details of the city, including its name and state ID.',
+  COLLEGE_GET_SUMMARY: 'Get a list of colleges based on city and/or state',
+  COLLEGE_GET_DESCRIPTION:
+    'Fetch colleges filtered by city and/or state names. If no filter is provided, all colleges will be returned.',
+  COLLEGE_GET_CITY_DESCRIPTION: 'The city name to filter the colleges by.',
+  COLLEGE_GET_STATE_DESCRIPTION: 'The state name to filter the colleges by.',
 };
 
 export const CityDtoMessages = {

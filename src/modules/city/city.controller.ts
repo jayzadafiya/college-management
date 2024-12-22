@@ -10,7 +10,13 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CityService } from './city.service';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateCityDto } from './dto/create-city.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
@@ -20,6 +26,7 @@ import { CityMessages } from 'src/common/constants/module-constants/city.constan
 import { ApiCustomResponse } from 'src/common/decorator/api-response.decorator';
 import { PaginationQuery } from 'src/common/decorator/pagination-query.decorator';
 import { TransformInterceptor } from 'src/common/transform.interceptor';
+import { CreateCollegeDto } from '../college/dto/create-college.dto';
 
 @ApiTags('Cities')
 @Controller('city')
@@ -86,5 +93,43 @@ export class CityController {
     @Body() updateCityDto: UpdateCityDto,
   ) {
     return await this.cityService.updateCity(id, updateCityDto);
+  }
+
+  @Get('/colleges')
+  @ApiOperation({
+    summary: CityMessages.COLLEGE_GET_SUMMARY,
+    description: CityMessages.COLLEGE_GET_DESCRIPTION,
+  })
+  @ApiQuery({
+    name: 'city',
+    required: false,
+    type: String,
+    description: CityMessages.COLLEGE_GET_CITY_DESCRIPTION,
+    example: 'Surat',
+  })
+  @ApiQuery({
+    name: 'state',
+    required: false,
+    type: String,
+    description: CityMessages.COLLEGE_GET_STATE_DESCRIPTION,
+    example: 'Gujarat',
+  })
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.COLLEGE_MATCHING_CRITERIA, [
+    CreateCollegeDto,
+  ])
+  @ApiCustomResponse(
+    HttpStatus.NOT_FOUND,
+    ErrorMessages.CITY_NOT_FOUND_IN_STATE,
+  )
+  @PaginationQuery()
+  @ApiCustomResponse(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_QUERY_PARAMS)
+  async getColleges(
+    @Query('city') city?: string,
+    @Query('state') state?: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('cursor') cursor: number = 1,
+  ) {
+    return this.cityService.getColleges(city, state, { page, limit, cursor });
   }
 }

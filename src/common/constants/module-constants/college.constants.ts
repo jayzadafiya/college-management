@@ -10,6 +10,10 @@ export const CollegeMessages = {
   UPDATE_DESCRIPTION: 'Update a College',
   UPDATE_BODY_DESCRIPTION: 'The details of the college to be updated.',
   UPDATE_PARAM_DESCRIPTION: 'ID of the college to update',
+  PLACEMENT_SUMMARY: 'Get college placement data by college ID',
+  PLACEMENT_DESCRIPTION:
+    'This endpoint retrieves placement data for a specific college based on the provided college ID. It returns average placement data grouped by year and detailed placement data with trends (up or down) over the years.',
+  PLACEMENT_PARAM_DESCRIPTION: 'ID of the college to fetch placement data for',
 } as const;
 
 export const CollegeDtoMessages = {

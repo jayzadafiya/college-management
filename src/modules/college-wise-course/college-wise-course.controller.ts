@@ -95,6 +95,10 @@ export class CollegeWiseCourseController {
   }
 
   @Get(':collegeId')
+  @ApiOperation({
+    summary: CollegeWiseCourseMessages.COLLEGE_SUMMARY,
+    description: CollegeWiseCourseMessages.COLLEGE_DESCRIPTION,
+  })
   @PaginationQuery()
   @ApiCustomResponse(HttpStatus.OK, SuccessMessages.COLLEGE_COURSE_RETRIEVED, [
     [CreateCollegeWiseCourseDto],
