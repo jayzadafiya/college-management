@@ -18,3 +18,29 @@ export const CollegeDtoMessages = {
   CITY_ID_DESCRIPTION: 'The ID of the city where the college is located.',
   STATE_ID_DESCRIPTION: 'The ID of the state where the college is located.',
 } as const;
+
+export const CollegePlacementResponseDtoMessages = {
+  YEAR_DESCRIPTION: 'The year for which the placement data is recorded.',
+  AVG_PACKAGE_DESCRIPTION: 'The average package offered to students.',
+  AVG_HIGHEST_PACKAGE_DESCRIPTION:
+    'The average highest package offered to students.',
+  AVG_Median_PACKAGE_DESCRIPTION:
+    'The average median package offered to students.',
+  AVG_PERCENTAGE_PLACEMENT_DESCRIPTION:
+    'The average percentage of students placed.',
+  PLACEMENT_SECTION_ID_DESCRIPTION:
+    'The unique identifier for the placement record',
+  PLACEMENT_SECTION_YEAR_DESCRIPTION: 'The year for this placement record',
+  PLACEMENT_SECTION_HIGHEST_PLACEMENT_DESCRIPTION:
+    'The highest placement salary for this year',
+  PLACEMENT_SECTION_AVERAGE_PLACEMENT_DESCRIPTION:
+    'The average placement salary for this year',
+  PLACEMENT_SECTION_MEDIAN_PLACEMENT_DESCRIPTION:
+    'The median placement salary for this year',
+  PLACEMENT_SECTION_PLACEMENT_RATE_DESCRIPTION:
+    'The percentage of students placed for this year',
+  PLACEMENT_SECTION_TREND_DESCRIPTION:
+    'The trend of placement rate for this year  (UP, DOWN, or null)',
+  AVG_SECTION_DESCRIPTION: 'The average placement data for the college',
+  PLCAMENT_SECTION_DESCRIPTION: 'The detailed placement data for the college',
+} as const;

@@ -15,4 +15,6 @@ export const SuccessMessages = {
   COLLEGE_COURSE_CREATED: 'Course created successfully',
   COLLEGE_COURSE_RETRIEVED: 'Successfully retrieved college courses',
   COLLEGE_COURSE_UPDATED: 'Course updated successfully',
+
+  COLLOEG_PLACEMENT_DETAILS: 'The placement data of the specified college',
 } as const;

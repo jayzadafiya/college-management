@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -21,9 +22,10 @@ import { PaginationMessage } from 'src/common/constants/pagination.constants';
 import { CreateCollegeDto } from './dto/create-college.dto';
 import { UpdateCollegeDto } from './dto/update-college.dto';
 import { TransformInterceptor } from 'src/common/transform.interceptor';
+import { CollegePlacementDataResponse } from './dto/college-placement-response.dto';
 
 @ApiTags('Colleges')
-@Controller('college')
+@Controller('college_data')
 @UseInterceptors(TransformInterceptor)
 export class CollegeController {
   constructor(private readonly collegeService: CollegeService) {}
@@ -84,5 +86,28 @@ export class CollegeController {
     @Body() updateCollegeDto: UpdateCollegeDto,
   ) {
     return await this.collegeService.updateCollege(id, updateCollegeDto);
+  }
+
+  @Get(':collegeId')
+  @ApiOperation({
+    summary: 'Get college placement data by college ID',
+    description:
+      'This endpoint retrieves placement data for a specific college based on the provided college ID. It returns average placement data grouped by year and detailed placement data with trends (up or down) over the years.',
+  })
+  @ApiParam({
+    name: 'collegeId',
+    description: 'ID of the college to fetch placement data for',
+    type: Number,
+    example: 1,
+  })
+  @ApiCustomResponse(
+    HttpStatus.OK,
+    SuccessMessages.COLLOEG_PLACEMENT_DETAILS,
+    CollegePlacementDataResponse,
+  )
+  async getCollegePlacementData(
+    @Param('collegeId', ParseIntPipe) collegeId: number,
+  ) {
+    return this.collegeService.getCollegePlacementData(collegeId);
   }
 }

@@ -95,4 +95,83 @@ export class CollegeService {
       message: SuccessMessages.COLLEGE_UPDATE,
     };
   }
+
+  async getCollegePlacementData(collegeId: number) {
+    const [avgSection, placementData] = await Promise.all([
+      // Get average section
+      this.prisma.collegePlacement.groupBy({
+        by: ['year'],
+        where: {
+          collegeId,
+          highestPlacement: { gt: 0 },
+          averagePlacement: { gt: 0 },
+          medianPlacement: { gt: 0 },
+          placementRate: { gt: 0 },
+        },
+        _avg: {
+          highestPlacement: true,
+          averagePlacement: true,
+          medianPlacement: true,
+          placementRate: true,
+        },
+        orderBy: {
+          year: 'desc',
+        },
+      }),
+
+      // Get placement data ordered by year descending
+      this.prisma.collegePlacement.findMany({
+        where: {
+          collegeId,
+          placementRate: { gt: 0 },
+        },
+        orderBy: {
+          year: 'desc',
+        },
+        select: {
+          id: true,
+          year: true,
+          highestPlacement: true,
+          averagePlacement: true,
+          medianPlacement: true,
+          placementRate: true,
+        },
+      }),
+    ]);
+
+    // Get the last two years of data
+    const lastTwoYears = placementData.slice(0, 2);
+
+    // Calculate placement trend
+    const placementSection = placementData.map((current) => {
+      let placement_trend = null;
+
+      // Only calculate trend for the latest year
+      if (lastTwoYears.length === 2 && current.year === lastTwoYears[0].year) {
+        const currentRate = Number(current.placementRate);
+        const previousRate = Number(lastTwoYears[1].placementRate);
+
+        placement_trend = currentRate > previousRate ? 'UP' : 'DOWN';
+      }
+
+      return {
+        ...current,
+        placement_trend,
+      };
+    });
+
+    // Format average section
+    const formattedAvgSection = avgSection.map((avg) => ({
+      year: avg.year,
+      avg_highest_placement: Number(avg._avg.highestPlacement).toFixed(2),
+      avg_average_placement: Number(avg._avg.averagePlacement).toFixed(2),
+      avg_median_placement: Number(avg._avg.medianPlacement).toFixed(2),
+      avg_placement_rate: Number(avg._avg.placementRate).toFixed(2),
+    }));
+
+    return {
+      avgSection: formattedAvgSection,
+      placementSection,
+    };
+  }
 }
