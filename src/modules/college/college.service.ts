@@ -55,6 +55,8 @@ export class CollegeService {
       this.prisma.college,
       paginationParams,
       { city: true, state: true },
+      {},
+      { score: 'desc' },
     );
 
     return {

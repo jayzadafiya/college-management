@@ -24,6 +24,8 @@ export async function findAll<T>(
   model: any,
   paginationParams: PaginationParams,
   includeRelations: any = {},
+  where: any = {},
+  orderBy: any = {},
 ): Promise<PaginationResponse<T>> {
   const { cursor, page, limit } = paginationParams;
 
@@ -36,11 +38,12 @@ export async function findAll<T>(
     data = await model.findMany({
       take: limit,
       skip,
-      orderBy: { id: 'asc' },
+      orderBy: { id: 'asc', ...orderBy },
       include: includeRelations,
+      where,
     });
 
-    const totalRecords = await model.count();
+    const totalRecords = await model.count({ where });
     meta = {
       total: totalRecords,
       page,
@@ -53,8 +56,9 @@ export async function findAll<T>(
       take: limit,
       skip: cursor ? 1 : 0,
       cursor: cursor ? { id: cursor } : undefined,
-      orderBy: { id: 'asc' },
+      orderBy: { id: 'asc', ...orderBy },
       include: includeRelations,
+      where,
     });
 
     meta = {
