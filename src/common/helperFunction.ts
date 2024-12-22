@@ -24,7 +24,6 @@ export async function findAll<T>(
   model: any,
   paginationParams: PaginationParams,
   includeRelations: any = {},
-  where: any = {},
   orderBy: any = {},
 ): Promise<PaginationResponse<T>> {
   const { cursor, page, limit } = paginationParams;
@@ -40,7 +39,6 @@ export async function findAll<T>(
       skip,
       orderBy: { id: 'asc', ...orderBy },
       include: includeRelations,
-      where,
     });
 
     const totalRecords = await model.count({ where });
@@ -58,7 +56,6 @@ export async function findAll<T>(
       cursor: cursor ? { id: cursor } : undefined,
       orderBy: { id: 'asc', ...orderBy },
       include: includeRelations,
-      where,
     });
 
     meta = {
