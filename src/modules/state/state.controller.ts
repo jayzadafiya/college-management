@@ -36,7 +36,7 @@ export class StateController {
     return this.stateService.create(createStateDto);
   }
 
-  @Get()
+  @Get('all')
   @ApiOperation({
     summary: StateMessages.GET_ALL_SUMMARY,
     description: StateMessages.GET_ALL_DESCRIPTION,

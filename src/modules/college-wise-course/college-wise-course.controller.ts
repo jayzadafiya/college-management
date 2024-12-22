@@ -48,7 +48,7 @@ export class CollegeWiseCourseController {
     return this.courseService.createCourse(createDto);
   }
 
-  @Get()
+  @Get('all')
   @ApiOperation({
     summary: CollegeWiseCourseMessages.GET_ALL_SUMMARY,
     description: CollegeWiseCourseMessages.GET_ALL_DESCRIPTION,

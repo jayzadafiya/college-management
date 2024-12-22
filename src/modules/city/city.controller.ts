@@ -47,7 +47,7 @@ export class CityController {
     return await this.cityService.create(createCityDto);
   }
 
-  @Get()
+  @Get('all')
   @ApiOperation({
     summary: CityMessages.GET_ALL_SUMMARY,
     description: CityMessages.GET_ALL_DESCRIPTION,

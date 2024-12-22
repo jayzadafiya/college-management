@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { CollegePlacementResponseDtoMessages } from 'src/common/constants/module-constants/college.constants';
 
-class AvgPlacementSection {
+export class AvgPlacementSection {
   @ApiProperty({
     description: CollegePlacementResponseDtoMessages.YEAR_DESCRIPTION,
     example: 2023,
@@ -36,7 +36,7 @@ class AvgPlacementSection {
   avg_placement_rate: string;
 }
 
-class PlacementSection {
+export class PlacementSection {
   @ApiProperty({
     description:
       CollegePlacementResponseDtoMessages.PLACEMENT_SECTION_ID_DESCRIPTION,

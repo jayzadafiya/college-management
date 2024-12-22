@@ -45,7 +45,7 @@ export class CollegeController {
     return await this.collegeService.create(createCollegeDto);
   }
 
-  @Get()
+  @Get('all')
   @ApiOperation({
     summary: CollegeMessages.GET_ALL_SUMMARY,
     description: CollegeMessages.GET_ALL_DESCRIPTION,
@@ -104,6 +104,10 @@ export class CollegeController {
     HttpStatus.OK,
     SuccessMessages.COLLOEG_PLACEMENT_DETAILS,
     CollegePlacementDataResponse,
+  )
+  @ApiCustomResponse(
+    HttpStatus.NOT_FOUND,
+    ErrorMessages.COLLEGE_PLACEMENT_NOT_FOUND,
   )
   async getCollegePlacementData(
     @Param('collegeId', ParseIntPipe) collegeId: number,

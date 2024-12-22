@@ -93,7 +93,7 @@ export class CollegePlacementService {
   async updatePlacement(
     id: number,
     updateCollegePlacementDto: UpdateCollegePlacementDto,
-  ) {
+  ): Promise<{ message: string; data: CollegePlacement }> {
     const {
       collegeId,
       year,

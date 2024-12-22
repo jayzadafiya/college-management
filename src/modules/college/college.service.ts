@@ -14,6 +14,7 @@ import {
 } from 'src/common/model/pagination.model';
 import { UpdateCollegeDto } from './dto/update-college.dto';
 import { CreateCollegeDto } from './dto/create-college.dto';
+import { AvgPlacementSection } from './dto/college-placement-response.dto';
 
 @Injectable()
 export class CollegeService {
@@ -96,7 +97,9 @@ export class CollegeService {
     };
   }
 
-  async getCollegePlacementData(collegeId: number) {
+  async getCollegePlacementData(
+    collegeId: number,
+  ): Promise<{ avgSection: AvgPlacementSection[]; placementSection: any }> {
     const [avgSection, placementData] = await Promise.all([
       // Get average section
       this.prisma.collegePlacement.groupBy({
@@ -168,6 +171,10 @@ export class CollegeService {
       avg_median_placement: Number(avg._avg.medianPlacement).toFixed(2),
       avg_placement_rate: Number(avg._avg.placementRate).toFixed(2),
     }));
+
+    if (!formattedAvgSection.length && !placementSection.length) {
+      throw new NotFoundException(ErrorMessages.COLLEGE_PLACEMENT_NOT_FOUND);
+    }
 
     return {
       avgSection: formattedAvgSection,

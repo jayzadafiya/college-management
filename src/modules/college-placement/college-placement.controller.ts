@@ -54,7 +54,7 @@ export class CollegePlacementController {
     );
   }
 
-  @Get()
+  @Get('all')
   @ApiOperation({
     summary: PlacementMessages.GET_ALL_SUMMARY,
     description: PlacementMessages.GET_ALL_DESCRIPTION,
