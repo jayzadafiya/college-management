@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -22,8 +23,8 @@ import { PaginationMessage } from 'src/common/constants/pagination.constants';
 import { PaginationQuery } from 'src/common/decorator/pagination-query.decorator';
 import { UpdateCollegeWiseCourseDto } from './dto/update-college-wise-courser.dto';
 
-@ApiTags('college-wise-course')
-@Controller('college-wise-course')
+@ApiTags('College Course')
+@Controller('college_course')
 @UseInterceptors(TransformInterceptor)
 export class CollegeWiseCourseController {
   constructor(private readonly courseService: CollegeWiseCourseService) {}
@@ -91,5 +92,28 @@ export class CollegeWiseCourseController {
     @Body() updateDto: UpdateCollegeWiseCourseDto,
   ) {
     return await this.courseService.updateCourse(id, updateDto);
+  }
+
+  @Get(':collegeId')
+  @PaginationQuery()
+  @ApiCustomResponse(HttpStatus.OK, SuccessMessages.COLLEGE_COURSE_RETRIEVED, [
+    [CreateCollegeWiseCourseDto],
+  ])
+  @ApiParam({
+    name: 'collegeId',
+    description: CollegeWiseCourseMessages.UPDATE_PARAM_DESCRIPTION,
+    required: true,
+    example: 1,
+  })
+  @ApiCustomResponse(
+    HttpStatus.NOT_FOUND,
+    ErrorMessages.COLLEGE_COURSE_NOT_FOUND,
+  )
+  @ApiCustomResponse(HttpStatus.BAD_REQUEST, PaginationMessage.INVALID_PAGE)
+  async getCollegeCourses(
+    @Param('collegeId', ParseIntPipe) collegeId: number,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.courseService.getCollegeCourses(collegeId, paginationDto);
   }
 }

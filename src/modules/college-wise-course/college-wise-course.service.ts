@@ -101,4 +101,78 @@ export class CollegeWiseCourseService {
       data: updatedCourse,
     };
   }
+
+  async getCollegeCourses(
+    collegeId: number,
+    paginationDto: PaginationDto,
+  ): Promise<PaginationResponse<CreateCollegeWiseCourseDto>> {
+    const { cursor, page, limit } = paginationDto;
+
+    let courses;
+
+    if (page) {
+      const skip = (page - 1) * limit;
+
+      courses = await this.prisma.collegeWiseCourse.findMany({
+        where: {
+          collegeId,
+        },
+        orderBy: {
+          courseFee: 'desc',
+        },
+        select: {
+          id: true,
+          courseName: true,
+          courseDuration: true,
+          courseFee: true,
+        },
+        skip,
+        take: limit,
+      });
+    } else {
+      courses = await this.prisma.collegeWiseCourse.findMany({
+        where: {
+          collegeId,
+        },
+        orderBy: {
+          courseFee: 'desc',
+        },
+        select: {
+          id: true,
+          courseName: true,
+          courseDuration: true,
+          courseFee: true,
+        },
+        skip: cursor ? 1 : 0,
+        cursor: cursor ? { id: cursor } : undefined,
+        take: limit,
+      });
+    }
+
+    if ((!courses || courses.length === 0) && (page >= 1 || cursor === 0)) {
+      throw new NotFoundException(ErrorMessages.COLLEGE_COURSE_NOT_FOUND);
+    }
+
+    return {
+      data: courses,
+      meta: {
+        page: page || 1,
+        limit: limit || 20,
+        nextCursor:
+          cursor !== undefined
+            ? courses.length
+              ? courses[courses.length - 1].id
+              : null
+            : null,
+        total:
+          cursor !== undefined
+            ? null
+            : await this.prisma.collegeWiseCourse.count({
+                where: {
+                  collegeId,
+                },
+              }),
+      },
+    };
+  }
 }
